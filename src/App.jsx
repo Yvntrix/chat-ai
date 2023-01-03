@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 function App() {
   const { currentUser } = useAuth();
 
-  const ProtectedRoute = ({children}) => {
+  const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
@@ -23,7 +23,7 @@ function App() {
             index
             element={
               <ProtectedRoute>
-                <Home/>
+                <Home />
               </ProtectedRoute>
             }
           />

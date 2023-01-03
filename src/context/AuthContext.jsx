@@ -12,15 +12,15 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user); 
+      setCurrentUser(user);
     });
 
     return unsubscribe;
   }, []);
 
-  return(
+  return (
     <AuthContext.Provider value={{ currentUser }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 };

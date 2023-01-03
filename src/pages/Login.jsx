@@ -17,6 +17,7 @@ const Login = () => {
 
   const signIn = async () => {
     setLoading(true);
+    setError(false);
 
     await signInWithPopup(auth, provider).catch((error) => {
       setLoading(false);
@@ -28,6 +29,7 @@ const Login = () => {
     setLoading(true);
     setError(false);
     e.preventDefault();
+    
     const email = e.target[0].value;
     const password = e.target[1].value;
 
@@ -54,7 +56,7 @@ const Login = () => {
           <span className="bg-red-100 text-red-700 p-1 rounded border text-sm border-red-200 text-center">
             {/* show errors dynamically */}
             {error.split("/")[1].charAt(0).toUpperCase() +
-              error.split("/")[1].replace(/-/g, " ").slice(1)}
+              error.split("/")[1].replace(/()-/g, " ").slice(1, -2)}
             , Please try again.
           </span>
         )}
@@ -97,7 +99,7 @@ const Login = () => {
             Sign in
           </button>
         </div>
-        <div className="text-center">
+        <div className="text-center mt-2">
           No account?{" "}
           {
             <Link className="text-indigo-600 hover:text-und" to={"/register"}>

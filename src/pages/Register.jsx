@@ -17,6 +17,7 @@ const Register = () => {
 
   const signIn = async () => {
     setLoading(true);
+    setError(false);
 
     await signInWithPopup(auth, provider).catch((error) => {
       setLoading(false);
@@ -28,6 +29,7 @@ const Register = () => {
     setLoading(true);
     setError(false);
     e.preventDefault();
+    
     const email = e.target[0].value;
     const password = e.target[1].value;
 
@@ -100,7 +102,7 @@ const Register = () => {
             Sign Up
           </button>
         </div>
-        <div className="text-center">
+        <div className="text-center mt-2">
           Already have an account?{" "}
           {
             <Link className="text-indigo-600 hover:text-und" to={"/login"}>
