@@ -29,7 +29,7 @@ const Login = () => {
     setLoading(true);
     setError(false);
     e.preventDefault();
-    
+
     const email = e.target[0].value;
     const password = e.target[1].value;
 
@@ -126,7 +126,7 @@ const Login = () => {
                 className="btn"
               >
                 <span className="sr-only">Continue with Google</span>
-                <img src="../../public/google.svg" className="h-5 w-5 flex-2" />
+                <img src="/google.svg" className="h-5 w-5 flex-2" />
                 <span className="flex-1 text-center text-base">
                   Continue with Google
                 </span>

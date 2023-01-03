@@ -4,14 +4,16 @@ import { auth } from "../firebase";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <button
-      onClick={() => {
-        auth.signOut();
-        navigate("/login");
-      }}
-    >
-      Sign out
-    </button>
+    <div className="w-screen h-screen bg-gray-800">
+      <button
+        onClick={() => {
+          auth.signOut();
+          navigate("/login");
+        }}
+      >
+        Sign out
+      </button>
+    </div>
   );
 };
 
