@@ -5,11 +5,7 @@ import { auth } from "../firebase";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { loading } = useAuth();
 
-  if (loading) {
-    return <Loading />;
-  }
   return (
     <div className="w-screen h-screen bg-gray-800">
       <button

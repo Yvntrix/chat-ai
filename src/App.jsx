@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Loading from "./components/Loading";
 import { useAuth } from "./context/AuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -6,7 +7,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Register";
 
 function App() {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
 
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
@@ -15,6 +16,9 @@ function App() {
     return children;
   };
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <BrowserRouter>
       <Routes>

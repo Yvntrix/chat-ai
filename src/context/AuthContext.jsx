@@ -14,14 +14,16 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     });
 
     return unsubscribe;
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser,loading }}>
+    <AuthContext.Provider value={{ currentUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
