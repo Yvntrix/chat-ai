@@ -1,25 +1,18 @@
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { auth } from "../firebase";
 
 const Register = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logInPopUp } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+  const { signUp } = useAuth();
 
   const signIn = async () => {
     setLoading(true);
     setError(false);
 
-    await signInWithPopup(auth, provider).catch((error) => {
+    await logInPopUp().catch((error) => {
       setLoading(false);
       setError(error.message);
     });
@@ -30,22 +23,21 @@ const Register = () => {
     setError(false);
     e.preventDefault();
 
-    const email = e.target[0].value;
-    const password = e.target[1].value;
+    const displayName = e.target[0].value;
+    const email = e.target[1].value;
+    const password = e.target[2].value;
 
-    await createUserWithEmailAndPassword(auth, email, password).catch(
-      (error) => {
-        setLoading(false);
-        setError(error.message);
-      }
-    );
+    await signUp(email, password, displayName).catch((error) => {
+      setLoading(false);
+      setError(error.message);
+    });
   };
 
   if (currentUser) {
     return <Navigate to="/" />;
   }
   return (
-    <div className="bg-gray-800 h-screen w-screen  flex justify-center items-center">
+    <div className="bg-zinc-800 h-screen w-screen  flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         action=""
@@ -62,7 +54,23 @@ const Register = () => {
             , Please try again.
           </span>
         )}
-
+        <div>
+          <label
+            htmlFor="display-name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Display Name
+          </label>
+          <div className="mt-1">
+            <input
+              name="display-name"
+              type="text"
+              autoComplete="display-name"
+              required
+              className="form-input"
+            />
+          </div>
+        </div>
         <div>
           <label
             htmlFor="email"
@@ -82,7 +90,7 @@ const Register = () => {
         </div>
         <div>
           <label
-            htmlFor="email"
+            htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
             Password

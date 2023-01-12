@@ -1,25 +1,17 @@
-import {
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { auth } from "../firebase";
 
 const Login = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logInPopUp, logIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
 
   const signIn = async () => {
     setLoading(true);
     setError(false);
 
-    await signInWithPopup(auth, provider).catch((error) => {
+    await logInPopUp().catch((error) => {
       setLoading(false);
       setError(error.message);
     });
@@ -33,7 +25,7 @@ const Login = () => {
     const email = e.target[0].value;
     const password = e.target[1].value;
 
-    await signInWithEmailAndPassword(auth, email, password).catch((error) => {
+    await logIn(email, password).catch((error) => {
       setLoading(false);
       setError(error.code);
     });
@@ -43,7 +35,7 @@ const Login = () => {
     return <Navigate to="/" />;
   }
   return (
-    <div className="bg-gray-800 h-screen w-screen  flex justify-center items-center">
+    <div className="bg-zinc-800 h-screen w-screen  flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         action=""
@@ -56,7 +48,7 @@ const Login = () => {
           <span className="bg-red-100 text-red-700 p-1 rounded border text-sm border-red-200 text-center">
             {/* show errors dynamically */}
             {error.split("/")[1].charAt(0).toUpperCase() +
-              error.split("/")[1].replace(/()-/g, " ").slice(1, -2)}
+              error.split("/")[1].replace(/()-/g, " ").slice(1)}
             , Please try again.
           </span>
         )}

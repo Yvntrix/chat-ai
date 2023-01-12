@@ -6,7 +6,7 @@ const PageNotFound = () => {
       <h1 className="text-xl font-bold">404 - Page Not Found</h1>
       <img className="max-h-[40%]" src="/404.svg" />
       <Link to={"/"}>
-        <div className="bg-blue-400 p-1.5 rounded font-semibold hover:bg-blue-500 text-white">
+        <div className="primary-btn">
           Go Home
         </div>
       </Link>
