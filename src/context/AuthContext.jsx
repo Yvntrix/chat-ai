@@ -37,25 +37,13 @@ export const AuthContextProvider = ({ children }) => {
     });
   }
   function signUp(email, password, displayName) {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      async (res) => {
-        await updateProfile(res.user, {
-          displayName: displayName,
-        });
-
-        await setDoc(doc(db, "users", res.user.uid), {
-          uid: res.user.uid,
-          displayName,
-          email,
-        });
-      }
-    );
+    return createUserWithEmailAndPassword(auth, email, password);
   }
   function logOut() {
     return signOut(auth);
   }
 
-  function resetPassword(email){
+  function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
 
@@ -74,7 +62,15 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, loading, logIn, logInPopUp, signUp, logOut ,resetPassword }}
+      value={{
+        currentUser,
+        loading,
+        logIn,
+        logInPopUp,
+        signUp,
+        logOut,
+        resetPassword,
+      }}
     >
       {children}
     </AuthContext.Provider>

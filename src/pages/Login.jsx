@@ -13,7 +13,7 @@ const Login = () => {
 
     await logInPopUp().catch((error) => {
       setLoading(false);
-      setError(error.message);
+      setError(error.code);
     });
   };
 

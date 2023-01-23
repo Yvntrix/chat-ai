@@ -6,8 +6,8 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthContextProvider>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <App />
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </AuthContextProvider>
 );

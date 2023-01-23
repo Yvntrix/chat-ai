@@ -1,16 +1,66 @@
-import useCreateAvatar from "../hooks/useCreateAvatar";
+import {
+  collection,
+  getDocs,
+  limitToLast,
+  onSnapshot,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import Message from "./Message";
 
-const Messages = (props) => {
-  const { name } = props;
-  const [avatar] = useCreateAvatar(name);
+const Messages = () => {
+  const [messages, setMessages] = useState([]);
+
+  const q = query(
+    collection(db, "messages"),
+    orderBy("createdAt", "asc"),
+    // limitToLast(5)
+  );
+  useEffect(() => {
+    // paginate();
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          setMessages((messages) => [...messages, change.doc.data()]);
+        }
+      });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const paginate = async () => {
+    const documentSnapshots = await getDocs(q);
+    documentSnapshots.forEach((doc) => {
+      console.log(doc.data());
+    });
+    const lastVisible =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    const next = query(
+      collection(db, "messages"),
+      orderBy("createdAt", "asc"),
+      startAfter(lastVisible),
+      limitToLast(25)
+    );
+    const documentSnapshots2 = await getDocs(next);
+    documentSnapshots2.forEach((doc) => {
+      console.log(doc.data());
+    });
+    //
+
+  };
+
   return (
-    <div className=" flex justify-start pl-5 text-white h-[8vh] items-center hover:bg-zinc-700 cursor-pointer hover:shadow-lg">
-      <img
-        className="inline-block h-8 w-8 rounded-full"
-        src={avatar}
-        alt="Avatar"
-      />
-      <span className="ml-1 whitespace-nowrap">{name}</span>
+    <div>
+      {messages &&
+        messages.map((m, idx) => (
+          <Message photoUrl={m.photoURL} displayName={m.displayName} content={m.message} key={idx} uid={m.uid} />
+        ))}
     </div>
   );
 };

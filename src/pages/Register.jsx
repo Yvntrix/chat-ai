@@ -1,6 +1,9 @@
+import { updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { db } from "../firebase";
 
 const Register = () => {
   const { currentUser, logInPopUp } = useAuth();
@@ -27,10 +30,22 @@ const Register = () => {
     const email = e.target[1].value;
     const password = e.target[2].value;
 
-    await signUp(email, password, displayName).catch((error) => {
-      setLoading(false);
-      setError(error.message);
-    });
+    await signUp(email, password, displayName)
+      .then(async (res) => {
+        await updateProfile(res.user, {
+          displayName,
+        });
+
+        await setDoc(doc(db, "users", res.user.uid), {
+          uid: res.user.uid,
+          displayName,
+          email,
+        });
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error.message);
+      });
   };
 
   if (currentUser) {
