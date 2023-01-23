@@ -1,34 +1,70 @@
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import AIMessages from "./AIMessages";
+import { v4 as uuid } from "uuid";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
-import Messages from "./Messages";
 
-const ChatArea = () => {
+const AiChatArea = () => {
   const [message, setMessage] = useState("");
   const { currentUser } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mes = e.target[0].value;
-
     setMessage("");
+    const response = await fetch("https://openai-y1as.onrender.com/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt: mes }),
+    });
 
-    await addDoc(collection(db, "messages"), {
-      message: mes,
-      createdAt: serverTimestamp(),
-      uid: currentUser.uid,
-      photoURL: currentUser.photoURL,
-      displayName: currentUser.displayName,
-    }).catch((err) => console.log(err));
+    await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
+      messages: arrayUnion({
+        id: uuid(),
+        message: mes,
+        uid: currentUser.uid,
+        createdAt: Timestamp.now(),
+        photoURL: currentUser.photoURL,
+        displayName: currentUser.displayName,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      console.log(parsedData);
+      await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
+        messages: arrayUnion({
+          id: uuid(),
+          message: parsedData,
+          uid: currentUser.uid,
+          createdAt: Timestamp.now(),
+          displayName: "OpenAI",
+        }),
+      });
+    } else {
+      const err = await response.text();
+      alert(err);
+    }
   };
   return (
     <div className="w-full relative">
       <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-center md:justify-start p-5 font-semibold text-lg">
-        Global Chat
+        OpenAI Chat
       </div>
       <div className="px-6 md:px-12 h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
-        <Messages />
+        <AIMessages />
       </div>
       <form
         className="h-[10vh] flex md:px-12 py-5 space-x-2 px-6"
@@ -55,4 +91,4 @@ const ChatArea = () => {
   );
 };
 
-export default ChatArea;
+export default AiChatArea;

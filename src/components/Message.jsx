@@ -1,17 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import useCreateAvatar from "../hooks/useCreateAvatar";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import dayjs from "dayjs";
+import calendar from "dayjs/plugin/calendar";
 
 const Message = (props) => {
-  const { content, uid, photoUrl, displayName } = props;
+  const { content, uid, photoUrl, displayName, createdAt } = props;
   const { currentUser } = useAuth();
   const [avatar] = useCreateAvatar(displayName);
   const ref = useRef();
+  const [msgDate, setMsgDate] = useState("");
+  dayjs.extend(calendar);
 
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
+    if (createdAt != null) {
+      if (dayjs().diff(dayjs.unix(createdAt.seconds), "h") > 48) {
+        setMsgDate(dayjs.unix(createdAt.seconds).format("MMMM D, YYYY h:mm A"));
+      } else {
+        setMsgDate(dayjs.unix(createdAt.seconds).calendar());
+      }
+    } else {
+      setMsgDate("Just now");
+    }
   }, [props]);
+
   return (
     <>
       <div
@@ -35,19 +51,25 @@ const Message = (props) => {
           }`}
         >
           <span
-            className={`text-zinc-400 text-sm  ${
+            className={`text-zinc-400 text-xs  ${
               currentUser.uid == uid ? "mr-2" : "ml-2"
             } `}
           >
             {displayName}
           </span>
-          <p
-            className={`mt-1  ${
-              currentUser.uid == uid ? "own-message" : "other-message"
-            } `}
+          <Tippy
+            content={<span className="text-sm">{msgDate}</span>}
+            placement="left"
+            arrow={false}
           >
-            {content}
-          </p>
+            <p
+              className={`mt-1  ${
+                currentUser.uid == uid ? "own-message" : "other-message"
+              } `}
+            >
+              {content}
+            </p>
+          </Tippy>
         </div>
       </div>
     </>

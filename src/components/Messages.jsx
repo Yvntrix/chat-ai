@@ -17,7 +17,7 @@ const Messages = () => {
   const q = query(
     collection(db, "messages"),
     orderBy("createdAt", "asc"),
-    // limitToLast(5)
+    limitToLast(50)
   );
   useEffect(() => {
     // paginate();
@@ -52,14 +52,20 @@ const Messages = () => {
       console.log(doc.data());
     });
     //
-
   };
 
   return (
     <div>
       {messages &&
         messages.map((m, idx) => (
-          <Message photoUrl={m.photoURL} displayName={m.displayName} content={m.message} key={idx} uid={m.uid} />
+          <Message
+            photoUrl={m.photoURL}
+            createdAt={m.createdAt}
+            displayName={m.displayName}
+            content={m.message}
+            key={idx}
+            uid={m.uid}
+          />
         ))}
     </div>
   );
