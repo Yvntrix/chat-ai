@@ -1,27 +1,16 @@
 import {
-  collection,
   doc,
-  getDoc,
-  getDocs,
-  limitToLast,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  startAfter,
+  getDoc, onSnapshot, setDoc
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
+import AiMessage from "./AiMessage";
 
 const AIMessages = () => {
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
-  const q = query(
-    collection(db, "aiChats"),
-    orderBy("createdAt", "asc"),
-    limitToLast(50)
-  );
+
   useEffect(() => {
     setAiMessage();
     const unSub = onSnapshot(
@@ -30,6 +19,10 @@ const AIMessages = () => {
         doc.exists() && setMessages(doc.data().messages);
       }
     );
+
+    return () => {
+      unSub();
+    };
   }, []);
 
   const setAiMessage = async () => {
@@ -39,18 +32,11 @@ const AIMessages = () => {
       await setDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
         messages: [],
       });
-    } else {
-      // console.log(res.data());
     }
   };
   return (
     <div>
-      {messages &&
-        messages.map((m, idx) => (
-          <div className="text-white py-2 border mb-2" key={idx}>
-            {m.message}
-          </div>
-        ))}
+      {messages && messages.map((m, idx) => <AiMessage key={idx} {...m} />)}
     </div>
   );
 };

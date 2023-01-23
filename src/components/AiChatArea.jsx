@@ -1,17 +1,10 @@
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { useEffect } from "react";
+import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import AIMessages from "./AIMessages";
 import { v4 as uuid } from "uuid";
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
+import AIMessages from "./AIMessages";
 
 const AiChatArea = () => {
   const [message, setMessage] = useState("");
@@ -21,14 +14,6 @@ const AiChatArea = () => {
     e.preventDefault();
     const mes = e.target[0].value;
     setMessage("");
-    const response = await fetch("https://openai-y1as.onrender.com/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt: mes }),
-    });
-
     await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
       messages: arrayUnion({
         id: uuid(),
@@ -40,30 +25,39 @@ const AiChatArea = () => {
       }),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      console.log(parsedData);
-      await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
-        messages: arrayUnion({
-          id: uuid(),
-          message: parsedData,
-          uid: currentUser.uid,
-          createdAt: Timestamp.now(),
-          displayName: "OpenAI",
-        }),
+    setTimeout(async () => {
+      const response = await fetch("https://openai-y1as.onrender.com/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: mes }),
       });
-    } else {
-      const err = await response.text();
-      alert(err);
-    }
+
+      if (response.ok) {
+        const data = await response.json();
+        const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+        await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
+          messages: arrayUnion({
+            id: uuid(),
+            message: parsedData,
+            uid: currentUser.uid + "-ai",
+            createdAt: Timestamp.now(),
+            displayName: "OpenAI",
+          }),
+        });
+      } else {
+        const err = await response.text();
+        alert(err);
+      }
+    }, 4000);
   };
   return (
     <div className="w-full relative">
       <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-center md:justify-start p-5 font-semibold text-lg">
         OpenAI Chat
       </div>
-      <div className="px-6 md:px-12 h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
+      <div className=" h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
         <AIMessages />
       </div>
       <form
