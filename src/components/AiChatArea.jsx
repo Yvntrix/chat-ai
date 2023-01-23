@@ -50,7 +50,7 @@ const AiChatArea = () => {
         const err = await response.text();
         alert(err);
       }
-    }, 4000);
+    }, 2000);
   };
   return (
     <div className="w-full relative">
