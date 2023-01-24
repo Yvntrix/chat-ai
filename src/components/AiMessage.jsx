@@ -13,10 +13,12 @@ const AiMessage = (props) => {
   const [messages, setMessages] = useState(message);
   const ref = useRef();
   const [avatar] = useCreateAvatar(displayName);
+  
   const q = query(
     collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
     where("id", "==", id)
   );
+
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [props, messages]);

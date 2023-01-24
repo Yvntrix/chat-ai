@@ -17,6 +17,7 @@ const AiChatArea = () => {
   const [message, setMessage] = useState("");
   const { currentUser } = useAuth();
   const [aiFetching, setAiFetching] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mes = e.target[0].value;
@@ -54,7 +55,6 @@ const AiChatArea = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.bot);
         await updateDoc(docRef, {
           message: data.bot,
         }).then(() => {
@@ -70,7 +70,10 @@ const AiChatArea = () => {
   return (
     <div className="w-full relative">
       <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-between md:justify-start p-5 font-semibold text-lg">
-        <Link to={"/"} className="border-2 p-1 rounded-md hover:bg-zinc-700  block md:hidden">
+        <Link
+          to={"/"}
+          className="border-2 p-1 rounded-md hover:bg-zinc-700  block md:hidden"
+        >
           <GlobeAltIcon className="w-6" />
         </Link>
         OpenAI Chat
@@ -84,7 +87,6 @@ const AiChatArea = () => {
         onSubmit={handleSubmit}
       >
         <input
-          disabled={aiFetching}
           placeholder="Type your message here..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -93,7 +95,7 @@ const AiChatArea = () => {
         />
         <button
           disabled={
-            !/\S/.test(message) ? true : message.length < 2 ? true : false
+            !/\S/.test(message) ? true : message.length < 2 ? true : aiFetching
           }
           type="submit"
           className="bg-zinc-700 p-2 flex justify-center items-center rounded-md enabled:hover:bg-zinc-600 disabled:text-zinc-600 text-zinc-300 disabled:cursor-not-allowed"

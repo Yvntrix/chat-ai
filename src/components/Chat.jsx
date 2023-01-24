@@ -3,6 +3,7 @@ import useCreateAvatar from "../hooks/useCreateAvatar";
 const Chat = (props) => {
   const { name } = props;
   const [avatar] = useCreateAvatar(name);
+  
   return (
     <div className=" flex justify-start pl-5 text-white h-[8vh] items-center hover:bg-zinc-700 cursor-pointer hover:shadow-lg">
       <img

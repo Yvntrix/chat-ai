@@ -13,6 +13,7 @@ import Messages from "./Messages";
 const ChatArea = () => {
   const [message, setMessage] = useState("");
   const { currentUser, logOut } = useAuth();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mes = e.target[0].value;

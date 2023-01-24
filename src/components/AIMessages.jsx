@@ -1,12 +1,8 @@
 import {
-  collection,
-  doc,
-  getDoc,
-  limitToLast,
+  collection, limitToLast,
   onSnapshot,
   orderBy,
-  query,
-  setDoc
+  query
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -17,6 +13,7 @@ import AiMessage from "./AiMessage";
 const AIMessages = () => {
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
+  
   const q = query(
     collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
     orderBy("createdAt", "asc"),
@@ -24,7 +21,6 @@ const AIMessages = () => {
   );
 
   useEffect(() => {
-    setAiMessage();
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
@@ -38,15 +34,6 @@ const AIMessages = () => {
     };
   }, []);
 
-  const setAiMessage = async () => {
-    const res = await getDoc(doc(db, "aiChats", currentUser.uid + "-ai"));
-
-    if (!res.exists()) {
-      await setDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
-        messages: [],
-      });
-    }
-  };
   return (
     <div>
       {messages && messages.map((m, idx) => <AiMessage key={idx} {...m} />)}
