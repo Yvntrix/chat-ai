@@ -5,7 +5,8 @@ import {
   limitToLast,
   onSnapshot,
   orderBy,
-  query
+  query,
+  setDoc
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";

@@ -1,10 +1,10 @@
 import { CpuChipIcon } from "@heroicons/react/24/outline";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { db } from "../firebase";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useAuth } from "../context/AuthContext";
+import { db } from "../firebase";
 
 const AiMessage = (props) => {
   const { createdAt, displayName, message, photoURL, uid, id } = props;
