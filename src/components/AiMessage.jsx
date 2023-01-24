@@ -57,7 +57,7 @@ const AiMessage = (props) => {
             <CpuChipIcon className="inline-block h-8 w-8 p-0.5 rounded-full text-zinc-300 bg-green-600" />
           )}
         </div>
-        <article className="prose prose-code:text-xs prose-invert text-sm max-w-[80%] md:max-w-full">
+        <article className="prose prose-invert prose-sm prose-code:text-xs min-w-[90%]">
           {messages == "..." ? (
             <img src="/three-dots.svg" className="h-8 w-8" />
           ) : (

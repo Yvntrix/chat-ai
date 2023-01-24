@@ -83,7 +83,7 @@ const AiChatArea = () => {
         OpenAI Chat
         <div></div>
       </div>
-      <div className=" h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
+      <div className=" h-[90vh] overflow-auto overflow-x-hidden flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
         <AIMessages />
       </div>
       <form
