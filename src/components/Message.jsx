@@ -6,6 +6,8 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import dayjs from "dayjs";
 import calendar from "dayjs/plugin/calendar";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import remarkGfm from "remark-gfm";
 
 const Message = (props) => {
   const { content, uid, photoUrl, displayName, createdAt } = props;
@@ -62,13 +64,13 @@ const Message = (props) => {
             placement="left"
             arrow={false}
           >
-            <p
-              className={`mt-1  ${
+            <article
+              className={`mt-1 prose  ${
                 currentUser.uid == uid ? "own-message" : "other-message"
               } `}
             >
-              {content}
-            </p>
+              <ReactMarkdown children={content} remarkPlugins={[remarkGfm]} />
+            </article>
           </Tippy>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  addDoc, collection, serverTimestamp, updateDoc
+} from "firebase/firestore";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import { useAuth } from "../context/AuthContext";
@@ -14,18 +16,29 @@ const AiChatArea = () => {
     e.preventDefault();
     const mes = e.target[0].value;
     setMessage("");
-    await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
-      messages: arrayUnion({
+
+    await addDoc(
+      collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
+      {
         id: uuid(),
         message: mes,
+        createdAt: serverTimestamp(),
         uid: currentUser.uid,
-        createdAt: Timestamp.now(),
         photoURL: currentUser.photoURL,
         displayName: currentUser.displayName,
-      }),
-    });
+      }
+    );
 
-    setTimeout(async () => {
+    await addDoc(
+      collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
+      {
+        id: uuid(),
+        message: "...",
+        createdAt: serverTimestamp(),
+        uid: currentUser.uid + "-ai",
+        displayName: "OpenAI",
+      }
+    ).then(async (docRef) => {
       const response = await fetch("https://openai-y1as.onrender.com/", {
         method: "POST",
         headers: {
@@ -37,20 +50,37 @@ const AiChatArea = () => {
       if (response.ok) {
         const data = await response.json();
         const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-        await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
-          messages: arrayUnion({
-            id: uuid(),
-            message: parsedData,
-            uid: currentUser.uid + "-ai",
-            createdAt: Timestamp.now(),
-            displayName: "OpenAI",
-          }),
+        console.log("updating");
+        await updateDoc(docRef, {
+          message: data.bot,
         });
       } else {
         const err = await response.text();
         alert(err);
       }
-    }, 2000);
+    });
+
+    // await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
+    //   messages: arrayUnion({
+    //     id: uuid(),
+    //     message: mes,
+    //     uid: currentUser.uid,
+    //     createdAt: Timestamp.now(),
+    //     photoURL: currentUser.photoURL,
+    //     displayName: currentUser.displayName,
+    //   }),
+    // });
+
+    // await updateDoc(doc(db, "aiChats", currentUser.uid + "-ai"), {
+    //   messages: arrayUnion({
+    //     id: uuid(),
+    //     message: "...",
+    //     uid: currentUser.uid,
+    //     createdAt: Timestamp.now(),
+    //     photoURL: currentUser.photoURL,
+    //     displayName: "OpenAI",
+    //   }),
+    // });
   };
   return (
     <div className="w-full relative">
