@@ -56,17 +56,7 @@ const Messages = () => {
 
   return (
     <div>
-      {messages &&
-        messages.map((m, idx) => (
-          <Message
-            photoUrl={m.photoURL}
-            createdAt={m.createdAt}
-            displayName={m.displayName}
-            content={m.message}
-            key={idx}
-            uid={m.uid}
-          />
-        ))}
+      {messages && messages.map((m, idx) => <Message {...m} key={idx} />)}
     </div>
   );
 };

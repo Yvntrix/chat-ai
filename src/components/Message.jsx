@@ -10,7 +10,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
 
 const Message = (props) => {
-  const { content, uid, photoUrl, displayName, createdAt } = props;
+  const { message, uid, photoURL, displayName, createdAt } = props;
   const { currentUser } = useAuth();
   const [avatar] = useCreateAvatar(displayName);
   const ref = useRef();
@@ -42,7 +42,7 @@ const Message = (props) => {
           <div>
             <img
               className="inline-block h-8 w-8 rounded-full"
-              src={photoUrl == null ? avatar : photoUrl}
+              src={photoURL == null ? avatar : photoURL}
               alt="Avatar"
             />
           </div>
@@ -69,7 +69,7 @@ const Message = (props) => {
                 currentUser.uid == uid ? "own-message" : "other-message"
               } `}
             >
-              <ReactMarkdown children={content} remarkPlugins={[remarkGfm]} />
+              <ReactMarkdown children={message} remarkPlugins={[remarkGfm]} />
             </article>
           </Tippy>
         </div>

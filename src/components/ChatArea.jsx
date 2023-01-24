@@ -1,13 +1,18 @@
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { CpuChipIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightOnRectangleIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/solid";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import Messages from "./Messages";
 
 const ChatArea = () => {
   const [message, setMessage] = useState("");
-  const { currentUser } = useAuth();
+  const { currentUser, logOut } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mes = e.target[0].value;
@@ -24,8 +29,18 @@ const ChatArea = () => {
   };
   return (
     <div className="w-full relative">
-      <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-center md:justify-start p-5 font-semibold text-lg">
-        Global Chat
+      <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-between md:justify-start p-5 font-semibold text-lg">
+        <Link to={"/ai"} className="border-2 p-1 rounded-md hover:bg-zinc-700">
+          <CpuChipIcon className="w-6" />
+        </Link>
+        <span>Global Chat</span>
+        <button
+          className="border-2 p-1 rounded-md hover:bg-zinc-700"
+          onClick={() => logOut()}
+          type="button"
+        >
+          <ArrowRightOnRectangleIcon className="w-6" />
+        </button>
       </div>
       <div className="px-6 md:px-12 h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
         <Messages />

@@ -5,19 +5,21 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
+import useCreateAvatar from "../hooks/useCreateAvatar";
 
 const AiMessage = (props) => {
   const { createdAt, displayName, message, photoURL, uid, id } = props;
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState(message);
   const ref = useRef();
+  const [avatar] = useCreateAvatar(displayName);
   const q = query(
     collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
     where("id", "==", id)
   );
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
-  }, [props]);
+  }, [props, messages]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -41,12 +43,14 @@ const AiMessage = (props) => {
         }`}
       >
         <div className="pr-2">
-          {photoURL != null ? (
-            <img
-              className="inline-block h-8 w-8 rounded-full"
-              src={photoURL}
-              alt="Avatar"
-            />
+          {photoURL !== undefined ? (
+            <div>
+              <img
+                className="inline-block h-8 w-8 rounded-full"
+                src={photoURL == null ? avatar : photoURL}
+                alt="Avatar"
+              />
+            </div>
           ) : (
             <CpuChipIcon className="inline-block h-8 w-8 p-0.5 rounded-full text-zinc-300 bg-green-600" />
           )}

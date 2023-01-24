@@ -20,6 +20,7 @@ export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(true);
   const provider = new GoogleAuthProvider();
+
   provider.setCustomParameters({ prompt: "select_account" });
 
   function logIn(email, password) {
