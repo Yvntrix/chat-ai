@@ -70,7 +70,7 @@ const AiChatArea = () => {
   return (
     <div className="w-full relative">
       <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-between md:justify-start p-5 font-semibold text-lg">
-        <Link to={"/"} className="border-2 p-1 rounded-md hover:bg-zinc-700">
+        <Link to={"/"} className="border-2 p-1 rounded-md hover:bg-zinc-700  block md:hidden">
           <GlobeAltIcon className="w-6" />
         </Link>
         OpenAI Chat
