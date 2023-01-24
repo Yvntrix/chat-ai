@@ -13,7 +13,7 @@ const AiMessage = (props) => {
   const [messages, setMessages] = useState(message);
   const ref = useRef();
   const [avatar] = useCreateAvatar(displayName);
-  
+
   const q = query(
     collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
     where("id", "==", id)
@@ -48,7 +48,7 @@ const AiMessage = (props) => {
           {photoURL !== undefined ? (
             <div>
               <img
-                className="inline-block h-8 w-8 rounded-full"
+                className="inline-block h-8 w-8 rounded-full p-0.5"
                 src={photoURL == null ? avatar : photoURL}
                 alt="Avatar"
               />
@@ -57,7 +57,7 @@ const AiMessage = (props) => {
             <CpuChipIcon className="inline-block h-8 w-8 p-0.5 rounded-full text-zinc-300 bg-green-600" />
           )}
         </div>
-        <article className="prose prose-invert">
+        <article className="prose prose-code:text-xs prose-invert text-sm">
           {messages == "..." ? (
             <img src="/three-dots.svg" className="h-8 w-8" />
           ) : (

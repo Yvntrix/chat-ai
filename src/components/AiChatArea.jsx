@@ -62,7 +62,11 @@ const AiChatArea = () => {
         });
       } else {
         const err = await response.text();
-        setAiFetching(false);
+        await updateDoc(docRef, {
+          message: "Something went wrong, Please try again.",
+        }).then(() => {
+          setAiFetching(false);
+        });
         alert(err);
       }
     });
@@ -79,7 +83,7 @@ const AiChatArea = () => {
         OpenAI Chat
         <div></div>
       </div>
-      <div className=" h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
+      <div className=" h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
         <AIMessages />
       </div>
       <form

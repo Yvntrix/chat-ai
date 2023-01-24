@@ -13,7 +13,7 @@ import Messages from "./Messages";
 const ChatArea = () => {
   const [message, setMessage] = useState("");
   const { currentUser, logOut } = useAuth();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const mes = e.target[0].value;
@@ -43,7 +43,7 @@ const ChatArea = () => {
           <ArrowRightOnRectangleIcon className="w-6" />
         </button>
       </div>
-      <div className="px-6 md:px-12 h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[12vh]">
+      <div className="px-6 md:px-12 h-[90vh] overflow-auto flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
         <Messages />
       </div>
       <form
