@@ -4,10 +4,11 @@ A chat app with realtime chat and OpenAi implementation
 
 ## Deploy Status
 
-<img src="https://therealsujitk-vercel-badge.vercel.app/?app=anotherchat&style=for-the-badge" />
+<img src="https://therealsujitk-vercel-badge.vercel.app/?app=chatai-v1&style=for-the-badge" />
 
 ## Link
 
+https://chatai-v1.vercel.app/
 
 
 ## Screenshot
