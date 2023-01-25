@@ -4,7 +4,7 @@ import {
   addDoc,
   collection,
   serverTimestamp,
-  updateDoc,
+  updateDoc
 } from "firebase/firestore";
 import { useState } from "react";
 import { Link } from "react-router-dom";

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
-import { useRef } from "react";
-import { useAuth } from "../context/AuthContext";
-import useCreateAvatar from "../hooks/useCreateAvatar";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import dayjs from "dayjs";
 import calendar from "dayjs/plugin/calendar";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import remarkGfm from "remark-gfm";
+import { useEffect, useRef, useState } from "react";
+import "tippy.js/dist/tippy.css";
+import { useAuth } from "../context/AuthContext";
+import useCreateAvatar from "../hooks/useCreateAvatar";
 
 const Message = (props) => {
   const { message, uid, photoURL, displayName, createdAt } = props;

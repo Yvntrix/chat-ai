@@ -5,7 +5,7 @@ const Logo = () => {
     <div className="flex items-center justify-center">
       <ChatBubbleBottomCenterTextIcon className="w-7 h-7 text-white" />
       <span className="text-white ml-2 text-md font-bold  whitespace-nowrap">
-        Another Chat
+        ChatAi
       </span>
     </div>
   );

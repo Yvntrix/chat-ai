@@ -1,8 +1,9 @@
 import {
-  collection, limitToLast,
+  collection,
+  limitToLast,
   onSnapshot,
   orderBy,
-  query
+  query,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -13,7 +14,7 @@ import AiMessage from "./AiMessage";
 const AIMessages = () => {
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
-  
+
   const q = query(
     collection(db, "aiChats", currentUser.uid + "-ai", "messages"),
     orderBy("createdAt", "asc"),

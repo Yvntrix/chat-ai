@@ -1,6 +1,6 @@
-# Another Chat
+# ChatAi
 
-A chat app with global chat an OpenAi implementation
+A chat app with realtime chat and OpenAi implementation
 
 ## Deploy Status
 
@@ -8,7 +8,7 @@ A chat app with global chat an OpenAi implementation
 
 ## Link
 
-https://anotherchat.vercel.app/
+
 
 ## Screenshot
 
