@@ -1,4 +1,4 @@
-# Noir
+# Another Chat
 
 A chat app with global chat an OpenAi implementation
 
