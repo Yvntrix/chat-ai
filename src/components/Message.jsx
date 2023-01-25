@@ -64,13 +64,13 @@ const Message = (props) => {
             placement="left"
             arrow={false}
           >
-            <article
-              className={`mt-1 prose  ${
+            <p
+              className={`mt-1 ${
                 currentUser.uid == uid ? "own-message" : "other-message"
               } `}
             >
-              <ReactMarkdown children={message} remarkPlugins={[remarkGfm]} />
-            </article>
+              {message}
+            </p>
           </Tippy>
         </div>
       </div>
