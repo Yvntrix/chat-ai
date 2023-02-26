@@ -1,6 +1,6 @@
 # ChatAi
 
-A chat app with realtime chat and OpenAi implementation
+Chat AI is a project that combines real-time global chat and an AI chatbot powered by OpenAI. Built with Vite, React JS, Tailwind CSS, and Firebase, Chat AI offers a fast and efficient user experience.
 
 ## Deploy Status
 
