@@ -58,11 +58,11 @@ const Message = (props) => {
           </span>
           <Tippy
             content={<span className="text-sm">{msgDate}</span>}
-            placement="left"
+            placement={currentUser.uid == uid ? "left" : "right"}
             arrow={false}
           >
             <p
-              className={`mt-1 ${
+              className={`mt-1 max-w-3xl break-words ${
                 currentUser.uid == uid ? "own-message" : "other-message"
               } `}
             >

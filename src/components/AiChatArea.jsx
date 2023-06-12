@@ -4,7 +4,7 @@ import {
   addDoc,
   collection,
   serverTimestamp,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -73,7 +73,7 @@ const AiChatArea = () => {
   };
   return (
     <div className="w-full relative">
-      <div className="h-[8vh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-between md:justify-start p-5 font-semibold text-lg">
+      <div className="h-[8dvh] w-full bg-zinc-900 shadow-lg absolute opacity-95 flex text-white items-center justify-between md:justify-start p-5 font-semibold text-lg">
         <Link
           to={"/"}
           className="border-2 p-1 rounded-md hover:bg-zinc-700  block md:hidden"
@@ -83,15 +83,16 @@ const AiChatArea = () => {
         OpenAI Chat
         <div></div>
       </div>
-      <div className=" h-[90vh] overflow-auto overflow-x-hidden flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
+      <div className=" h-[90dvh] overflow-auto overflow-x-hidden flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
         <AIMessages />
       </div>
       <form
-        className="h-[10vh] flex md:px-12 py-5 space-x-2 px-6"
+        className="h-[10dvh] flex md:px-12 py-5 space-x-2 px-6"
         onSubmit={handleSubmit}
       >
         <input
-          placeholder="Type your message here..."
+          disabled
+          placeholder="OPEN AI IS CURRENTLY UNAVAILABLE"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           type="text"
