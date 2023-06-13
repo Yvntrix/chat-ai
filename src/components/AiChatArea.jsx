@@ -83,8 +83,31 @@ const AiChatArea = () => {
         OpenAI Chat
         <div></div>
       </div>
-      <div className=" h-[90dvh] overflow-auto overflow-x-hidden flex flex-col-reverse scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
-        <AIMessages />
+      <div className=" h-[90dvh] overflow-auto overflow-x-hidden flex flex-col scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-full scrollbar-thin pt-[8vh]">
+        <div className="rounded-md bg-yellow-50 p-4 m-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <span
+                className="h-5 w-5 text-yellow-400 font-bold text-3xl"
+                aria-hidden="true"
+              >
+                !
+              </span>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-lg font-semibold text-yellow-800">
+                Attention needed
+              </h3>
+              <div className="mt-2  text-yellow-700">
+                <p>
+                  Unfortunately OpenAi Free token has expired, so you can't
+                  use ai chat for now. We are working on a solution. Sorry
+                  for the inconvenience.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <form
         className="h-[10dvh] flex md:px-12 py-5 space-x-2 px-6"
